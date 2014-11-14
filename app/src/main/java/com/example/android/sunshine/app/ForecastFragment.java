@@ -1,5 +1,6 @@
 package com.example.android.sunshine.app;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -124,6 +125,9 @@ public class ForecastFragment extends Fragment {
                 String value = (String) adapter.getItemAtPosition(position);
                 Log.d(TAG, "QQQ: value: " + value);
                 Toast.makeText(getActivity(), value, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT, value);
+
                 // assuming string and if you want to get the value on click of list item
                 // do what you intend to do on click of listview row
             }

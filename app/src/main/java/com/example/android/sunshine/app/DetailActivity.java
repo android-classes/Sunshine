@@ -1,18 +1,20 @@
 package com.example.android.sunshine.app;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.TextView;
 
 
 public class DetailActivity extends ActionBarActivity {
+    private static String TAG = DetailActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,10 @@ public class DetailActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+            Intent intent = getActivity().getIntent();
+            Log.d(TAG, "XXX: QQQ: intent: "+intent);
+            String forecaststr=intent.getStringExtra(Intent.EXTRA_TEXT);
+            ((TextView) rootView.findViewById(R.id.detail_text)).setText(forecaststr);
             return rootView;
         }
     }
