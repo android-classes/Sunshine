@@ -1,9 +1,11 @@
 package com.example.android.sunshine.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -72,40 +74,56 @@ public class ForecastFragment extends Fragment {
             return true;
         }
         else if (id == R.id.action_refresh) {
-            
-                // http://openweathermap.org/API#forecast
-                final String FORECAST_BASE_URL =
-                        "http://api.openweathermap.org/data/2.5/forecast/daily?";
-            String format = "json";
-            String units = "imperial" ; //"metric";
-            int numDays = 7;
-
-                final String QUERY_PARAM = "q";
-                final String FORMAT_PARAM = "mode";
-                final String UNITS_PARAM = "units";
-                final String DAYS_PARAM = "cnt";
-
-                Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                        .appendQueryParameter(QUERY_PARAM, "11221,USA")
-                        .appendQueryParameter(FORMAT_PARAM, format)
-                        .appendQueryParameter(UNITS_PARAM, units)
-                        .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
-                        .build();
-
-            URL url = null;
-            try {
-                url = new URL(builtUri.toString());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-
-            Log.v(TAG, "Built URI " + builtUri.toString());
-            //new FetchWeatherTask().execute("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=imperial&cnt=7");
-            new FetchWeatherTask().execute(url.toString());
+            refreshWeather();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void refreshWeather(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = prefs.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+
+        // http://openweathermap.org/API#forecast
+        final String FORECAST_BASE_URL =
+                "http://api.openweathermap.org/data/2.5/forecast/daily?";
+        String format = "json";
+        String units = "metric"; // "imperial" ; //"metric";
+        int numDays = 7;
+
+        final String QUERY_PARAM = "q";
+        final String FORMAT_PARAM = "mode";
+        final String UNITS_PARAM = "units";
+        final String DAYS_PARAM = "cnt";
+
+        Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                //.appendQueryParameter(QUERY_PARAM, "11221,USA")
+                .appendQueryParameter(QUERY_PARAM, location)
+
+                .appendQueryParameter(FORMAT_PARAM, format)
+                .appendQueryParameter(UNITS_PARAM, units)
+                .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.v(TAG, "Built URI " + builtUri.toString());
+        //new FetchWeatherTask().execute("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=imperial&cnt=7");
+        new FetchWeatherTask().execute(url.toString());
+
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        refreshWeather();
     }
 
     @Override

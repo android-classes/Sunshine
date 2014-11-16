@@ -27,5 +27,16 @@
 
     <!-- Default postal code for location preference [CHAR LIMIT=NONE] -->
     <string name="pref_location_default" translatable="false">11221,USA</string>
+    <!-- Label for the location preference [CHAR LIMIT=30] -->
+    <string name="pref_units_label">Units</string>
+
+    <!-- Key name for storing location in SharedPreferences [CHAR LIMIT=NONE] -->
+    <string name="pref_units_key" translatable="false">units</string>
+
+    <!-- Default postal code for location preference [CHAR LIMIT=NONE] -->
+    <string name="pref_units_default" translatable="false">metric</string>
+
+    <string name="action_map">Map Location</string>
+    <string name="action_share">Share</string>
 
 </resources>
