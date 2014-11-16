@@ -66,7 +66,9 @@ public class ForecastFragment extends Fragment {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        Log.d(TAG, "id: " + id);
         if (id == R.id.action_settings) {
+            startActivity(new Intent(getActivity(), SettingsActivity.class));
             return true;
         }
         else if (id == R.id.action_refresh) {
@@ -126,8 +128,11 @@ public class ForecastFragment extends Fragment {
                 Log.d(TAG, "QQQ: value: " + value);
                 Toast.makeText(getActivity(), value, Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT, value);
+                Log.d(TAG, "QQQ: sending intent...");
 
+                Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT, value);
+                Log.d(TAG, "QQQ: send intent: " + intent);
+                startActivity(intent);
                 // assuming string and if you want to get the value on click of list item
                 // do what you intend to do on click of listview row
             }
